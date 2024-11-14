@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Livre</title>
+</head>
+
+<body>
+    <h1>Livres</h1>
+    <div class="left-align-container">
+        <button id="toggleFormBtn" onclick="toggleForm()">Nouveau +</button>
+
+        <form id="bookForm">
+            <label for="titre">Titre</label>
+            <input type="text" id="titre" name="titre" placeholder="titre" required>
+
+            <label for="auteur">Auteur</label>
+            <input type="text" id="auteur" name="auteur" placeholder="nom de l'auteur" required>
+
+            <label for="date_sortie">Date de Sortie</label>
+            <input type="date" id="date_sortie" name="date_sortie" required>
+
+            <label for="date_sortie">Nombre de page</label>
+            <input type="number" id="nb_page" name="nb_page" placeholder="10" required>
+
+            <button type="submit">Ajouter le Livre</button>
+        </form>
+    </div>
+    <div class="tableau">
+        <table id="booksTable">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div id="pagination">   
+        </div>
+    </div>
+
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+          <span id="closeModal" class="close">&times;</span>
+          <h2>Détails du Livre</h2>
+          <p><strong>Titre:</strong> <span id="modalTitre"></span></p>
+          <p><strong>Auteur:</strong> <span id="modalAuteur"></span></p>
+          <p><strong>Date de Sortie:</strong> <span id="modalDateSortie"></span></p>
+          <p><strong>Nombre de Pages:</strong> <span id="modalNbPage"></span></p>
+        </div>
+    </div>
+
+     <div id="editBookModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Modifier le Livre</h2>
+            <form id="editBookForm">
+                <label for="editTitre">Titre</label>
+                <input type="text" id="editTitre" name="editTitre" required>
+
+                <label for="editAuteur">Auteur</label>
+                <input type="text" id="editAuteur" name="editAuteur" required>
+
+                <label for="editDateSortie">Date de Sortie</label>
+                <input type="date" id="editDateSortie" name="editDateSortie" required>
+
+                <label for="editNbPage">Nombre de Page</label>
+                <input type="number" id="editNbPage" name="editNbPage" required>
+
+                <button type="submit">Modifier</button>
+            </form>
+        </div>  
+    <script src="app.js"></script>
+</body>
+
+</html>
