@@ -1,46 +1,39 @@
-name: CI/CD Pipeline Docker Compose
+name: CI/CD Pipeline for Render
 
 on:
   push:
     branches:
-      - main  # Ce workflow se déclenche lors d'un push sur la branche main
-  pull_request:
-    branches:
-      - main  # Ce workflow se déclenche lors d'une PR sur la branche main
+      - main  # Déclenche ce pipeline pour chaque push vers la branche main
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest  # Utilisation de l'Ubuntu Runner GitHub Actions
+    runs-on: ubuntu-latest  # L'environnement où le workflow s'exécutera
 
     steps:
-      # 1. Vérification du code source
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # Étape 1: Vérifier le code source
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # 2. Installer Docker et Docker Compose
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
+    # Étape 2: Configurer Docker
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-      - name: Set up Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+    # Étape 3: Construire l'image Docker
+    - name: Build Docker image
+      run: |
+        docker build -t render-app .
 
-      # 3. Construire les services Docker avec Docker Compose
-      - name: Build and start containers
-        run: |
-          docker-compose -f docker-compose.yml up --build -d
+    # Étape 4: Authentification auprès de Render
+    - name: Render Login
+      run: |
+        echo "Rendering API Key: ${{ secrets.RENDER_API_KEY }}"
+        curl -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+             -X POST \
+             -d '{"service":"livre","branch":"main","docker":"true"}' \
+             https://livre-u2u0.onrender.com
 
-      # 5. Déployer sur le serveur local via SSH
-      - name: SSH into server and deploy Docker Compose
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            # Se connecter au serveur, tirer les images et démarrer les conteneurs avec Docker Compose
-            cd /home/nambinina001/Documents/Livre
-            docker-compose pull  # Tirer la dernière image
-            docker-compose down  # Arrêter les anciens conteneurs
-            docker-compose up -d  # Lancer les nouveaux conteneurs en mode détaché
+    # Étape 5: Pousser l'image Docker vers Render
+    - name: Push Docker image to Render
+      run: |
+        docker tag render-app registry.render.com/Nambinina I. DIMBY/livre:latest
+        docker push registry.render.com/Nambinina I. DIMBY/livre:latest

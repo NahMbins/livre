@@ -6,6 +6,8 @@ const livreController = require('../controllers/livreController');
 
 router.get('/', livreController.getAllLivre);
 
+router.get('/search', livreController.searchBookByName);
+
 router.post('/', livreController.createLivre);
 
 router.get('/:id', livreController.getLivreById);

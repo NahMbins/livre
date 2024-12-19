@@ -15,7 +15,7 @@ document.getElementById('bookForm').addEventListener('submit', function (event) 
         nb_page: nb_page,
     };
 
-    fetch('http://localhost:3001/api/livre/', {
+    fetch('api/livre/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ function addBookToTable(book) {
     detailsButton.innerHTML = '<i class="fas fa-eye"></i>';
     detailsButton.classList.add('details-btn');
     detailsButton.addEventListener('click', function () {
-        fetch(`http://localhost:3001/api/livre/${book._id}`)
+        fetch(`api/livre/${book._id}`)
             .then(response => response.json())
             .then(data => {
                 document.getElementById('modalTitre').textContent = data.titre;
@@ -75,7 +75,7 @@ function addBookToTable(book) {
     deleteButton.classList.add('delete-btn');
     deleteButton.addEventListener('click', function () {
         if (confirm(`Êtes-vous sûr de vouloir supprimer le livre "${book.titre}" ?`)) {
-            fetch(`http://localhost:3001/api/livre/${book._id}`, {
+            fetch(`api/livre/${book._id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ document.getElementById('editBookForm').addEventListener('submit', function (eve
         nb_page: nb_page,
     };
 
-    fetch(`/api/livre/${currentBookId}`, {
+    fetch(`api/livre/${currentBookId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ document.getElementById('editBookForm').addEventListener('submit', function (eve
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('/api/livre')
+    fetch('api/livre')
         .then(response => response.json())
         .then(livres => {
             livres.forEach(book => {
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let currentPage = 1; 
 
   function fetchBooks(page) {
-      fetch(`/api/livre?page=${page}&limit=${LIMIT}`)
+      fetch(`api/livre?page=${page}&limit=${LIMIT}`)
           .then(response => response.json())
           .then(data => {
               const livres = data.livres;

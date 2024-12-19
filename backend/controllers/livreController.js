@@ -94,10 +94,30 @@ const updateLivre = async (req, res) => {
   }
 };
 
+const searchBookByName = async (req, res) => {
+  const { titre } = req.query;
+
+  try {
+    const livre = await Livre.find({ titre: new RegExp(titre, 'i') }); 
+
+    if (!livre) {
+      return res.status(404).send({ message: "Livre non trouvé" });
+    }
+
+    res.json(
+      livre,
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Erreur lors de la recherche du livre", error: err.message });
+  }
+};
+
 module.exports = {
   getAllLivre,
   createLivre,
   getLivreById,
   deleteLivre,
-  updateLivre
+  updateLivre,
+  searchBookByName
 };
