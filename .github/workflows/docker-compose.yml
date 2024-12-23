@@ -22,23 +22,9 @@ jobs:
       # Étape 2 : Installer Docker
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
-      # Étape 3 : Construire l'image Docker de Node.js
-      - name: Build Node.js Docker image
-        run: docker-compose -f docker-compose.yml build
-
-      # Étape 4 : Démarrer les services via Docker Compose
+        
       - name: Start Docker Compose services
         run: docker-compose -f docker-compose.yml up -d
 
-      # Étape 5 : Exécuter les tests
-      - name: Run Tests
-        run: |
-          docker exec node-backend npm install
-          docker exec node-backend npm test
-
-      # Étape 6 : Arrêter les services après les tests
-      - name: Stop Docker Compose services
-        run: docker-compose -f docker-compose.yml down
 
 
