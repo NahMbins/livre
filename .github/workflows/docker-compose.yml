@@ -41,17 +41,4 @@ jobs:
       - name: Stop Docker Compose services
         run: docker-compose -f docker-compose.yml down
 
-  # # Job de déploiement
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: build-and-test  # Le job deploy dépend du job précédent "build-and-test"
 
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v2
-
-  #     - name: Deploy Application (ex. vers un serveur de production)
-  #       run: |
-  #         # Commande pour déployer votre app, par exemple vers un serveur
-  #         echo "Deploying to production server..."
-  #         # Vous pouvez ajouter des commandes pour déployer votre app sur AWS, Azure, ou autre.
