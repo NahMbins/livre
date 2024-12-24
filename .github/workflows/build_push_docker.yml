@@ -3,38 +3,51 @@ name: Build and Push Docker Images
 on:
   push:
     branches:
-      - main 
+      - main  # Ou la branche que vous préférez.
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Utilisation de l'image Ubuntu la plus récente pour le runner
 
     steps:
-      # Etape 1: Checkout du code
+      # Étape 1: Checkout du code
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      # Etape 2: Configurer Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      # Étape 2: Installer Docker et Docker Compose explicitement
+      - name: Set up Docker and Docker Compose
+        run: |
+          # Installer Docker
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
 
-      # Etape 3: Connexion à Docker Hub
+          # Vérifier que Docker est bien installé
+          docker --version
+
+          # Installer Docker Compose
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
+          # Vérifier que Docker Compose est bien installé
+          docker-compose --version
+
+      # Étape 3: Connexion à Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      # Etape 4: Construire et tagger les images avec Docker Compose
+      # Étape 4: Construire les images Docker avec Docker Compose
       - name: Build Docker images
         run: |
           # Construire l'image MongoDB avec Docker Compose
           docker-compose -f docker-compose.yml build mongodb
-
+          
           # Construire l'image Node Backend avec Docker Compose
           docker-compose -f docker-compose.yml build node-backend
 
-      # Etape 5: Push des images vers Docker Hub
+      # Étape 5: Push des images vers Docker Hub
       - name: Push Docker images to Docker Hub
         run: |
           # Push de l'image MongoDB vers Docker Hub
