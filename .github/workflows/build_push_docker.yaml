@@ -65,5 +65,5 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/node-backend:latest
 
             # Exécuter l'image Docker dans un conteneur
-            sudo docker run -d -p 80:3001 --name node-backend ${{ secrets.DOCKER_USERNAME }}/node-backend:latest
+            sudo docker run -d -p 80:3001 --name node-backend --network bdconnection ${{ secrets.DOCKER_USERNAME }}/node-backend:latest
           EOF
