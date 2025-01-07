@@ -55,6 +55,7 @@ jobs:
             sudo service docker start
 
             #supprimer image docker existant 
+            sudo docker rm -f node-backend
             sudo docker rmi -f ${{ secrets.DOCKER_USERNAME }}/node-backend:latest
 
             # Se connecter à Docker Hub pour récupérer l'image
